@@ -1,163 +1,362 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>貓糧碳水化合物計算器</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <style>
-    body{
-      font-family: "Microsoft JhengHei", sans-serif;
-      background:#f5f7fb;
-      padding:30px;
-      color:#333;
+<title>貓糧碳水化合物計算器</title>
+
+<style>
+
+:root{
+    --bg:#f3f5fb;
+    --card:#ffffff;
+    --text:#222;
+    --sub:#666;
+    --input:#f7f8fc;
+    --border:#dfe3ef;
+
+    --blue:#3b82f6;
+    --red:#ef4444;
+    --green:#10b981;
+    --orange:#f59e0b;
+
+    --shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+body.dark{
+    --bg:#111827;
+    --card:#1f2937;
+    --text:#f3f4f6;
+    --sub:#cbd5e1;
+    --input:#111827;
+    --border:#374151;
+
+    --shadow:0 10px 30px rgba(0,0,0,0.35);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    font-family:"Microsoft JhengHei",sans-serif;
+    color:var(--text);
+    transition:0.3s;
+}
+
+.wrapper{
+    max-width:520px;
+    margin:auto;
+    min-height:100vh;
+    padding:20px 16px 40px;
+}
+
+.app-card{
+    background:var(--card);
+    border-radius:28px;
+    padding:24px;
+    box-shadow:var(--shadow);
+    transition:0.3s;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.title{
+    font-size:28px;
+    font-weight:800;
+}
+
+.subtitle{
+    color:var(--sub);
+    margin-top:6px;
+    font-size:14px;
+}
+
+.dark-btn{
+    border:none;
+    background:var(--input);
+    color:var(--text);
+    padding:10px 14px;
+    border-radius:14px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.input-card{
+    background:var(--input);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:14px;
+    margin-bottom:14px;
+}
+
+.input-card label{
+    display:block;
+    margin-bottom:10px;
+    font-weight:700;
+}
+
+.input-wrap{
+    position:relative;
+}
+
+.input-wrap input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-size:22px;
+    color:var(--text);
+    padding-right:40px;
+}
+
+.percent{
+    position:absolute;
+    right:0;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--sub);
+}
+
+.result-section{
+    margin-top:24px;
+}
+
+.result-title{
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:16px;
+}
+
+.result-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.result-item:last-child{
+    border-bottom:none;
+}
+
+.result-name{
+    color:var(--sub);
+}
+
+.result-value{
+    font-size:20px;
+    font-weight:800;
+}
+
+.blue{
+    color:var(--blue);
+}
+
+.red{
+    color:var(--red);
+}
+
+.score-box{
+    margin-top:24px;
+    padding:18px;
+    border-radius:20px;
+    text-align:center;
+    color:white;
+    font-weight:700;
+    font-size:18px;
+}
+
+.score-good{
+    background:linear-gradient(135deg,#10b981,#34d399);
+}
+
+.score-normal{
+    background:linear-gradient(135deg,#3b82f6,#60a5fa);
+}
+
+.score-warning{
+    background:linear-gradient(135deg,#f59e0b,#fbbf24);
+}
+
+.score-bad{
+    background:linear-gradient(135deg,#ef4444,#f87171);
+}
+
+.score-detail{
+    margin-top:10px;
+    font-size:14px;
+    opacity:0.95;
+    line-height:1.7;
+}
+
+.footer{
+    margin-top:22px;
+    color:var(--sub);
+    font-size:13px;
+    line-height:1.8;
+}
+
+@media(max-width:480px){
+
+    .title{
+        font-size:24px;
     }
 
-    .container{
-      max-width:700px;
-      margin:auto;
-      background:white;
-      padding:25px;
-      border-radius:16px;
-      box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    .result-value{
+        font-size:18px;
     }
 
-    h1{
-      text-align:center;
-      margin-bottom:25px;
-    }
+}
 
-    .input-group{
-      display:grid;
-      grid-template-columns: 1fr 120px;
-      gap:10px;
-      margin-bottom:15px;
-      align-items:center;
-    }
-
-    label{
-      font-weight:bold;
-    }
-
-    input{
-      padding:10px;
-      border:1px solid #ccc;
-      border-radius:8px;
-      font-size:16px;
-    }
-
-    .result{
-      margin-top:30px;
-      border-top:2px solid #eee;
-      padding-top:20px;
-    }
-
-    .result-item{
-      display:flex;
-      justify-content:space-between;
-      margin-bottom:12px;
-      font-size:18px;
-    }
-
-    .highlight-red{
-      color:red;
-      font-weight:bold;
-    }
-
-    .highlight-blue{
-      color:blue;
-      font-weight:bold;
-    }
-
-    .note{
-      margin-top:20px;
-      font-size:14px;
-      color:#666;
-      line-height:1.7;
-      background:#fafafa;
-      padding:15px;
-      border-radius:10px;
-    }
-  </style>
+</style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>貓糧碳水化合物計算器</h1>
+<div class="wrapper">
 
-  <div class="input-group">
-    <label>粗蛋白 (%)</label>
-    <input type="number" id="protein" step="0.1">
-  </div>
+    <div class="app-card">
 
-  <div class="input-group">
-    <label>粗脂肪 (%)</label>
-    <input type="number" id="fat" step="0.1">
-  </div>
+        <div class="topbar">
 
-  <div class="input-group">
-    <label>水分 (%)</label>
-    <input type="number" id="moisture" step="0.1">
-  </div>
+            <div>
+                <div class="title">🐈 貓糧計算器</div>
+                <div class="subtitle">
+                    碳水化合物 / 乾物重分析
+                </div>
+            </div>
 
-  <div class="input-group">
-    <label>粗纖維 (%)</label>
-    <input type="number" id="fiber" step="0.1">
-  </div>
+            <button class="dark-btn" onclick="toggleDarkMode()">
+                🌙 深色模式
+            </button>
 
-  <div class="input-group">
-    <label>灰份 (%)</label>
-    <input type="number" id="ash" step="0.1">
-  </div>
+        </div>
 
-  <div class="result">
-    <div class="result-item">
-      <span>碳水化合物</span>
-      <span id="carb">0%</span>
+        <!-- INPUTS -->
+
+        <div class="input-card">
+            <label>粗蛋白</label>
+            <div class="input-wrap">
+                <input type="number" id="protein" step="0.1">
+                <span class="percent">%</span>
+            </div>
+        </div>
+
+        <div class="input-card">
+            <label>粗脂肪</label>
+            <div class="input-wrap">
+                <input type="number" id="fat" step="0.1">
+                <span class="percent">%</span>
+            </div>
+        </div>
+
+        <div class="input-card">
+            <label>水分</label>
+            <div class="input-wrap">
+                <input type="number" id="moisture" step="0.1">
+                <span class="percent">%</span>
+            </div>
+        </div>
+
+        <div class="input-card">
+            <label>粗纖維</label>
+            <div class="input-wrap">
+                <input type="number" id="fiber" step="0.1">
+                <span class="percent">%</span>
+            </div>
+        </div>
+
+        <div class="input-card">
+            <label>灰份</label>
+            <div class="input-wrap">
+                <input type="number" id="ash" step="0.1">
+                <span class="percent">%</span>
+            </div>
+        </div>
+
+        <!-- RESULTS -->
+
+        <div class="result-section">
+
+            <div class="result-title">
+                📊 分析結果
+            </div>
+
+            <div class="result-item">
+                <div class="result-name">碳水化合物</div>
+                <div class="result-value" id="carb">0%</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-name">整體乾物重比例</div>
+                <div class="result-value" id="dryMatter">0%</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-name">乾物重碳水化合物比例</div>
+                <div class="result-value" id="dryCarb">0%</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-name">乾物重蛋白質</div>
+                <div class="result-value" id="dryProtein">0%</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-name">乾物重脂肪</div>
+                <div class="result-value" id="dryFat">0%</div>
+            </div>
+
+        </div>
+
+        <!-- AI SCORE -->
+
+        <div id="scoreBox" class="score-box score-normal">
+
+            🐾 尚未輸入資料
+
+            <div class="score-detail">
+                請輸入營養成分
+            </div>
+
+        </div>
+
+        <div class="footer">
+
+            <strong>判定邏輯：</strong><br>
+
+            乾物重碳水化合物比例：
+            <br><br>
+
+            ＜10%：極佳（低碳水）<br>
+            10~20%：良好<br>
+            20~25%：普通<br>
+            ＞25%：偏高
+
+        </div>
+
     </div>
-
-    <div class="result-item">
-      <span>整體乾物重比例</span>
-      <span id="dryMatter">0%</span>
-    </div>
-
-    <div class="result-item">
-      <span>乾物重碳水化合物比例</span>
-      <span id="dryCarb">0%</span>
-    </div>
-
-    <div class="result-item">
-      <span>乾物重蛋白質</span>
-      <span id="dryProtein">0%</span>
-    </div>
-
-    <div class="result-item">
-      <span>乾物重脂肪</span>
-      <span id="dryFat">0%</span>
-    </div>
-  </div>
-
-  <div class="note">
-    <strong>公式說明：</strong><br>
-    碳水化合物 = 100 − 粗蛋白 − 粗脂肪 − 水分 − 粗纖維 − 灰份<br>
-    整體乾物重比例 = 100 − 水分<br>
-    乾物重碳水化合物比例 = 碳水化合物 ÷ 整體乾物重 × 100<br>
-    乾物重蛋白質 = 粗蛋白 ÷ 整體乾物重 × 100<br>
-    乾物重脂肪 = 粗脂肪 ÷ 整體乾物重 × 100
-  </div>
 
 </div>
 
 <script>
 
-  const inputs = document.querySelectorAll("input");
+const inputs = document.querySelectorAll("input");
 
-  inputs.forEach(input => {
+inputs.forEach(input => {
     input.addEventListener("input", calculate);
-  });
+});
 
-  function calculate(){
+function calculate(){
 
     const protein = parseFloat(document.getElementById("protein").value) || 0;
     const fat = parseFloat(document.getElementById("fat").value) || 0;
@@ -165,42 +364,119 @@
     const fiber = parseFloat(document.getElementById("fiber").value) || 0;
     const ash = parseFloat(document.getElementById("ash").value) || 0;
 
-    // 碳水化合物
     let carb = 100 - protein - fat - moisture - fiber - ash;
 
-    // 乾物重
     let dryMatter = 100 - moisture;
 
-    // 乾物重碳水
     let dryCarb = dryMatter > 0 ? (carb / dryMatter) * 100 : 0;
 
-    // 乾物重蛋白
     let dryProtein = dryMatter > 0 ? (protein / dryMatter) * 100 : 0;
 
-    // 乾物重脂肪
     let dryFat = dryMatter > 0 ? (fat / dryMatter) * 100 : 0;
 
-    // 顯示數值
-    updateColorText("carb", carb);
-    updateColorText("dryCarb", dryCarb);
+    if(carb < 0){
+        carb = 0;
+    }
 
-    document.getElementById("dryMatter").innerText = dryMatter.toFixed(2) + "%";
-    document.getElementById("dryProtein").innerText = dryProtein.toFixed(2) + "%";
-    document.getElementById("dryFat").innerText = dryFat.toFixed(2) + "%";
-  }
+    updateColor("carb", carb);
+    updateColor("dryCarb", dryCarb);
 
-  function updateColorText(id, value){
+    document.getElementById("dryMatter").innerText =
+        dryMatter.toFixed(2) + "%";
 
-    const element = document.getElementById(id);
+    document.getElementById("dryProtein").innerText =
+        dryProtein.toFixed(2) + "%";
 
-    element.innerText = value.toFixed(2) + "%";
+    document.getElementById("dryFat").innerText =
+        dryFat.toFixed(2) + "%";
+
+    updateScore(dryCarb);
+}
+
+function updateColor(id,value){
+
+    const el = document.getElementById(id);
+
+    el.innerText = value.toFixed(2) + "%";
 
     if(value > 25){
-      element.className = "highlight-red";
+        el.className = "result-value red";
     }else{
-      element.className = "highlight-blue";
+        el.className = "result-value blue";
     }
-  }
+
+}
+
+function updateScore(dryCarb){
+
+    const box = document.getElementById("scoreBox");
+
+    if(dryCarb <= 0){
+
+        box.className = "score-box score-normal";
+
+        box.innerHTML = `
+            🐾 尚未輸入資料
+            <div class="score-detail">
+                請輸入營養成分
+            </div>
+        `;
+
+        return;
+    }
+
+    if(dryCarb < 10){
+
+        box.className = "score-box score-good";
+
+        box.innerHTML = `
+            🥩 極佳低碳水
+            <div class="score-detail">
+                非常符合貓咪偏肉食性需求
+            </div>
+        `;
+
+    }else if(dryCarb < 20){
+
+        box.className = "score-box score-normal";
+
+        box.innerHTML = `
+            👍 良好
+            <div class="score-detail">
+                碳水比例控制不錯
+            </div>
+        `;
+
+    }else if(dryCarb <= 25){
+
+        box.className = "score-box score-warning";
+
+        box.innerHTML = `
+            ⚠️ 普通
+            <div class="score-detail">
+                碳水開始偏高，需留意
+            </div>
+        `;
+
+    }else{
+
+        box.className = "score-box score-bad";
+
+        box.innerHTML = `
+            🚨 碳水偏高
+            <div class="score-detail">
+                對部分貓咪可能較不理想
+            </div>
+        `;
+    }
+
+}
+
+function toggleDarkMode(){
+
+    document.body.classList.toggle("dark");
+
+}
 
 </script>
 
